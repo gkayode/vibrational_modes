@@ -73,6 +73,7 @@ def read_vibrational_modes(outcar):
             count=count+1
 
     df=pd.DataFrame(rawData,index=None)
+    df.columns = ['index','x','y','z','frequency','frequency_type']
     return df
 
 
@@ -86,11 +87,11 @@ def get_vibrational_frequency(outcar,kind="all"):
         freq=[x for x in freq if ~np.isnan(x)]
         return freq
     elif kind=="imag":
-        freq=df.loc[df[5]=="f/i"]
-        freq=freq[freq.columns[4]].unique()
-        return freq
+                freq=df.loc[df['frequency_type']=="f/i"]
+                freq=freq[freq.columns[4]].unique()
+                return freq
     elif kind=="non_imag":
-        freq=df.loc[df[5]=="f"]
+        freq=df.loc[df['frequency_type']=="f"]
         freq=freq[freq.columns[4]].unique()
         return freq
 
